@@ -1,0 +1,12 @@
+1) Finish the word validation process
+
+2) Implement the (guess/answer) comparation and colors
+
+3) Improve cursor management
+
+4) Create the game won or lost state
+
+5) Redefine for better readability
+
+6) Improve UI
+

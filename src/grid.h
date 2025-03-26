@@ -34,5 +34,6 @@ void make_grid(void);
 void print_container(void);
 void print_bound(void);
 char *get_guess(Position_t *_cursor);
+void erase_line(Position_t *_cursor);
 
 #endif 

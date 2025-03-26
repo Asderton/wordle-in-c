@@ -52,12 +52,22 @@ char *get_guess(Position_t *_cursor){
                 letter_index--;
                 break;
         }  
-    }
-    _cursor -> x = 2;
-    _cursor -> y += 4;
+    }   
     return word_guessed;
 }
 
+
+void erase_line(Position_t *_cursor){
+    _cursor -> x = 2;
+    move _CURRENT_POSITION;
+    for (int i = 0; i < LETTER_QUANTITY; i++){
+        addch(' ');
+        _cursor -> x RIGHT;
+        move _CURRENT_POSITION;
+    }
+    _cursor -> x = 2;
+    move _CURRENT_POSITION;
+}
 
 void print_bound(void){
     char buffer[LETTER_QUANTITY * CELL_SIZE];

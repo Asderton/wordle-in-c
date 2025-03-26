@@ -1,36 +1,9 @@
 #include "grid.h"
-#include<ncurses.h>
-#include<stdlib.h>
 
 
-void make_grid(void);
-
-int main(void){
-
-    initscr();
-
-    make_grid();
-    refresh();
-
-    char *guess = get_guess();
-// Space for answer-validation and coloration
-
-    
-    refresh();
-   
-
-
-    move(10,10);
-    getch();
-    
-
-    endwin();
-
-}
-
-
+//Prints the cells
 void make_grid(void){
-    for (int tiles_printed = 0; tiles_printed < LETTER_QUANTITY; tiles_printed++){
+    for (int squares_printed = 0; squares_printed < CHANCES; squares_printed++){
         print_bound();
         print_container();
         print_bound();
@@ -39,9 +12,8 @@ void make_grid(void){
 }
 
 //El nombre del parametro es el utilizado en los define, no cambiar, preguntar a sami si es mala idea xD
-char *get_guess(void){
-    
-    Position_t _cursor = {START_POSITION};
+char *get_guess(Position_t *_cursor){
+    refresh();
     noecho();
     char *word_guessed = malloc(sizeof(char) * LETTER_QUANTITY);
 
@@ -51,8 +23,8 @@ char *get_guess(void){
         char letter_guessed = getch();
         refresh();
 
-        if (letter_guessed == 27 && _cursor.x > 2){
-            _cursor.x LEFT;
+        if (letter_guessed == 27 && _cursor -> x > 2){
+            _cursor -> x LEFT;
             move _CURRENT_POSITION;
             addch(' ');
             refresh();
@@ -66,7 +38,7 @@ char *get_guess(void){
             case 'a'...'z':
                 if (letter_index != LETTER_QUANTITY - 1){
                 addch(letter_guessed);
-                _cursor.x += 6;
+                _cursor->x RIGHT;
                 word_guessed[letter_index] = letter_guessed;
                 }
                 else{
@@ -81,6 +53,8 @@ char *get_guess(void){
                 break;
         }  
     }
+    _cursor -> x = 2;
+    _cursor -> y += 4;
     return word_guessed;
 }
 

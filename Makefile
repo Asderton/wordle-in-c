@@ -1,13 +1,9 @@
-prueba: src/prueba.c src/grid.c
-	@gcc src/prueba.c src/grid.c -o bin/prueba
-	@./bin/prueba
-
-
-grid: src/grid.c 
-	@gcc  src/grid.c -o bin/grid -lncurses
-	@./bin/grid
+wordle: src/wordle.c src/grid.c src/validate.c
+	@gcc src/wordle.c src/grid.c src/validate.c -o bin/wordle -lncurses
+	@./bin/wordle
 
 
 
 clean:
-	@if [ $(shell find ./bin -name prueba) ]; then rm ./bin/prueba; else echo "No hay archivo"; fi
+	@rm bin/wordle
+	@clear

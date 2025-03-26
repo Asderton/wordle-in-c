@@ -2,13 +2,18 @@
 #define GRID_H
 #include<stdio.h>
 #include<stdlib.h>
+#include<ncurses.h>
+#include<stdlib.h>
+#include<string.h>
 
 #define BOUNDS ("|---| ")
 #define CONTAINER ("|   | ")
 
 
-#define _CURRENT_POSITION (_cursor.y, _cursor.x)
+#define _CURRENT_POSITION (_cursor -> y, _cursor -> x)
 #define START_POSITION 2,1
+
+#define NEXT_ROW (cursor.y + 4, 2)
 
 
 #define RIGHT += 6
@@ -25,8 +30,9 @@ typedef struct {
 }Position_t;
 
 
+void make_grid(void);
 void print_container(void);
 void print_bound(void);
-char *get_guess(void);
+char *get_guess(Position_t *_cursor);
 
 #endif 

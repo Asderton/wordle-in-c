@@ -1,4 +1,5 @@
-#include "validate.h"
+#include "../headers/validate.h"
+
 
 
 //Guess validation
@@ -101,4 +102,22 @@ void add_word(char *word, node *root){
     }
 
     trie_p -> is_leaf = true;
+}
+
+char *get_random_word(node *root){
+    node *trie_p = root;
+    char *answer = malloc(sizeof(char) * LETTER_QUANTITY);
+    srand(time(NULL));
+
+    for (int i = 0; i < LETTER_QUANTITY; i++){
+        int index = rand() % 26;
+        if (trie_p -> children[index] != NULL){
+            answer[i] = index + 'a';
+            trie_p = trie_p -> children[index];
+        }
+        else{
+            i--;
+        }
+    }
+    return answer;
 }

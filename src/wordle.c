@@ -1,4 +1,4 @@
-#include "wordle.h"
+#include "../headers/wordle.h"
 
 int main(void){
 
@@ -11,6 +11,8 @@ int main(void){
     init_pair(1, COLOR_GREEN, COLOR_BLACK);
     init_pair(2, COLOR_YELLOW, COLOR_BLACK);
     init_pair(3, COLOR_RED, COLOR_BLACK);
+
+    char *answer = get_random_word(trie);
 
     make_grid();
     refresh();
@@ -45,7 +47,7 @@ int main(void){
             cursor.x = START_OF_LINE;
             move CURRENT_POSITION;
 
-            enum Color *letter_colors = check_guess(guess, ANSWER);
+            enum Color *letter_colors = check_guess(guess, answer);
             attempt_tracker[attempts] = letter_colors;
             int green_counter = 0;
 
@@ -63,7 +65,7 @@ int main(void){
                     attroff(COLOR_PAIR(1));
                     green_counter++;
                     if (green_counter == LETTER_QUANTITY){
-                        end_game(true, attempts + 1, attempt_tracker);
+                        end_game(true, attempts + 1, attempt_tracker, answer);
                         return 0;
                     }
                   
@@ -88,13 +90,12 @@ int main(void){
         refresh();
     }
 
-    end_game(false, CHANCES, attempt_tracker);
-    getch();
+    end_game(false, CHANCES, attempt_tracker, answer);
     endwin();
 
 }
 
-void end_game(bool won, int attempts, enum Color **attempt_color_code){
+void end_game(bool won, int attempts, enum Color **attempt_color_code, char *answer){
     
     clear();
     printw("|--------------------------------|\n");
@@ -105,7 +106,7 @@ void end_game(bool won, int attempts, enum Color **attempt_color_code){
         printw("|            You Lost!           |\n");
     printw("|                                |\n");
     printw("|          The word was:         |\n");
-    printw("|             \"%s\"            |\n", ANSWER);
+    printw("|             \"%s\"            |\n", answer);
     printw("|                                |\n");
     printw("|         Your attempts:         |\n");
     printw("|                                |\n");//*****

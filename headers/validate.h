@@ -5,6 +5,7 @@
 #include<stdbool.h>
 #include<stdlib.h>
 #include<string.h>
+#include<time.h>
 #include"grid.h"
 
 //Settings for the trie
@@ -29,5 +30,6 @@ bool is_word(char *word, node *root);
 node *create_trie(void);
 node *create_node(void);
 void add_word(char *word, node *root);
+char *get_random_word(node *root);
 
 #endif

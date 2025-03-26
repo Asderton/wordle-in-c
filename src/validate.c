@@ -1,66 +1,62 @@
 #include "validate.h"
 
 
-//Function that checks how similar is the guess to the answer
+//Guess validation
 enum Color *check_guess(char *guess, char* answer){
 
     enum Color *display_colors = malloc(sizeof(enum Color) * 5);
+    char* _answer = malloc(sizeof(answer));
+    for (int i = 0; i < LETTER_QUANTITY; i++){
+        _answer[i] = answer[i];
+    }
 
-    for (int i = 0; i < strlen(guess); i++){
-        for (int j = 0; j < strlen(answer); j++){
-
-            if(guess[i] == answer[j]){
-
+    for (int i = 0; i < LETTER_QUANTITY; i++){
+        for (int j = 0; j < LETTER_QUANTITY; j++){
+            if(guess[i] == _answer[j]){
                 if (i == j){
                     display_colors[i] = GREEN;
+                    _answer[j] = ' ';
                     break;
                 }
-
                 else {
                     display_colors[i] = YELLOW;
+                    _answer[j] = ' ';
                     break;
                 }
-
             }
             display_colors[i] = RED;
-            
-        } //TERMINA EL J
-
+        }
     }
     return display_colors;
 }
 
-//Function that creates an empty node
-node *create_node(void){
-    node *new_node = malloc(sizeof(node));
 
-    for (int i = 0; i <= MAX_CHILDREN; i++){
-        new_node -> children[i] = NULL;
-    }
-
-    new_node -> is_leaf = false;
-    return new_node;
-}
-
-//Function that adds a word to the trie
-void add_word(char *word, node *root){
-
-    node *trie_p = root;
+//Cheks if guess is in the trie (Deberia llamar al parametro guess Sami?)
+bool is_word(char *word, node *root){
+    
+    node * trie_p = root;
 
     for (int i = 0; i < strlen(word); i++){
+
         int index = word[i] - 'a';
-
-        if(trie_p -> children[index] == NULL){
-            trie_p -> children[index] = create_node();
+        if (trie_p -> children[index] != NULL){
+            trie_p = trie_p -> children[index];
         }
-        trie_p = trie_p -> children [index];
+        else{
+            return false;
+        }
     }
-
-    trie_p -> is_leaf = true;
+    if (trie_p -> is_leaf){
+        return true;
+    }
+    else {
+        return false;
+    }
 }
 
-//Function that creates a trie from a file
-node *create_tree(void){
+
+//Creation of the trie
+node *create_trie(void){
 
     node *root = malloc(sizeof(node));
     root = create_node();
@@ -80,26 +76,29 @@ node *create_tree(void){
     return root;
 }
 
-//Function that returns true if a given word is in the given trie
-bool in_trie(char *word, node *root){
+node *create_node(void){
+    node *new_node = malloc(sizeof(node));
 
-    node * trie_p = root;
+    for (int i = 0; i <= MAX_CHILDREN; i++){
+        new_node -> children[i] = NULL;
+    }
+
+    new_node -> is_leaf = false;
+    return new_node;
+}
+
+void add_word(char *word, node *root){
+
+    node *trie_p = root;
 
     for (int i = 0; i < strlen(word); i++){
         int index = word[i] - 'a';
-        
-        if (trie_p -> children[index] != NULL){
-            trie_p = trie_p -> children[index];
+
+        if(trie_p -> children[index] == NULL){
+            trie_p -> children[index] = create_node();
         }
-        else{
-            return false;
-        }
-    }
-    if (trie_p -> is_leaf){
-        return true;
-    }
-    else {
-        return false;
+        trie_p = trie_p -> children [index];
     }
 
+    trie_p -> is_leaf = true;
 }

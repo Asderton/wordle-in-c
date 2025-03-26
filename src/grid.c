@@ -1,26 +1,19 @@
 #include "grid.h"
 
 
-//Prints the cells
-void make_grid(void){
-    for (int squares_printed = 0; squares_printed < CHANCES; squares_printed++){
-        print_bound();
-        print_container();
-        print_bound();
-        printw("\n");
-    }
-}
-
-//El nombre del parametro es el utilizado en los define, no cambiar, preguntar a sami si es mala idea xD
+//Movement along the lines
 char *get_guess(Position_t *_cursor){
-    refresh();
     noecho();
+
     char *word_guessed = malloc(sizeof(char) * LETTER_QUANTITY);
 
     for (int letter_index = 0; letter_index < LETTER_QUANTITY; letter_index++){
         
         move _CURRENT_POSITION;
         char letter_guessed = getch();
+        if (letter_guessed >= 'a' && letter_guessed <= 'z'){
+            letter_guessed MAKE_UPPER;
+        }
         refresh();
 
         if (letter_guessed == 27 && _cursor -> x > 2){
@@ -33,18 +26,19 @@ char *get_guess(Position_t *_cursor){
             letter_index --;
         }
 
+        //Use un switch nomas para practicarlo
         switch(letter_guessed){
             case 'A'...'Z':
-            case 'a'...'z':
+
                 if (letter_index != LETTER_QUANTITY - 1){
                 addch(letter_guessed);
                 _cursor->x RIGHT;
-                word_guessed[letter_index] = letter_guessed;
+                word_guessed[letter_index] = letter_guessed MAKE_LOWER;
                 }
-                else{
+                else {
                 addch(letter_guessed);
                 refresh();
-                word_guessed[letter_index] = letter_guessed;
+                word_guessed[letter_index] = letter_guessed MAKE_LOWER;
                 }
                 break;
 
@@ -56,17 +50,28 @@ char *get_guess(Position_t *_cursor){
     return word_guessed;
 }
 
-
 void erase_line(Position_t *_cursor){
-    _cursor -> x = 2;
+    _cursor -> x = START_OF_LINE;
     move _CURRENT_POSITION;
     for (int i = 0; i < LETTER_QUANTITY; i++){
         addch(' ');
         _cursor -> x RIGHT;
         move _CURRENT_POSITION;
     }
-    _cursor -> x = 2;
+    _cursor -> x = START_OF_LINE;
     move _CURRENT_POSITION;
+}
+
+
+
+//Creation of the rows 
+void make_grid(void){
+    for (int squares_printed = 0; squares_printed < CHANCES; squares_printed++){
+        print_bound();
+        print_container();
+        print_bound();
+        printw("\n");
+    }
 }
 
 void print_bound(void){

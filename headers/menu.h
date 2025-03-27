@@ -4,13 +4,22 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<ncurses.h>
-#include "../headers/grid.h"
-#include "../headers/validate.h"
-#include "../headers/wordle.h"
+#include "grid.h"
+#include "validate.h"
+#include "wordle.h"
 
-#define DEFAULT_LANGUAGE "en"
+#define EN 0
+#define ES 1
 
-char *start_menu(char *language);
-char *language_menu(char *language);
+typedef struct game_state{
+    int n_letters;
+    int chances;
+    int language;
+    bool won;
+} game_state;
+
+void start_menu(game_state *game);
+void language_menu(game_state *game);
+void difficulty_menu(game_state *game);
 
 #endif

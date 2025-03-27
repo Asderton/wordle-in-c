@@ -6,6 +6,7 @@
 #include<ncurses.h>
 #include<stdlib.h>
 #include<string.h>
+#include "menu.h"
 
 //Terminal art for grid
 #define BOUNDS ("|---| ")

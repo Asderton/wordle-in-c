@@ -3,12 +3,17 @@
 int main(void){
 
     node *trie = create_trie();
+    game_state game;
+    game.n_letters = 5;
+    game.chances = 6;
+    game.language = EN;
+    game.won = false;
 
     initscr();
     start_color();
     
-    char language[] = "en";
-    start_menu("en");
+    
+    start_menu(&game);
     clear();
     Position_t cursor = {START_POSITION};
     enum Color *attempt_tracker[CHANCES];

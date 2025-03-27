@@ -5,6 +5,11 @@ int main(void){
     node *trie = create_trie();
 
     initscr();
+    start_color();
+    
+    char language[] = "en";
+    start_menu("en");
+    clear();
     Position_t cursor = {START_POSITION};
     enum Color *attempt_tracker[CHANCES];
     start_color();

@@ -1,5 +1,5 @@
-wordle: src/wordle.c src/grid.c src/validate.c
-	@gcc src/wordle.c src/grid.c src/validate.c -o bin/wordle -lncurses
+wordle: src/wordle.c src/grid.c src/validate.c src/menu.c
+	@gcc src/wordle.c src/grid.c src/validate.c src/menu.c -o bin/wordle -lncurses
 	@./bin/wordle
 
 

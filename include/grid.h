@@ -6,7 +6,8 @@
 #include<ncurses.h>
 #include<stdlib.h>
 #include<string.h>
-#include "menu.h"
+#include "utilities.h"
+
 
 //Terminal art for grid
 #define BOUNDS ("|---| ")
@@ -36,11 +37,6 @@
 #define CHANCES 6
 #define CELL_SIZE 6
 
-
-typedef struct {
-    int x;
-    int y;
-}Position_t;
 
 
 //Movement along the rows

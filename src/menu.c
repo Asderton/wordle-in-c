@@ -1,6 +1,6 @@
-#include "../headers/menu.h"
+#include "../include/menu.h"
 
-void start_menu(game_state *game){
+void start_menu(game_settings *game){
     
     curs_set(0);
     clear();
@@ -92,7 +92,7 @@ void start_menu(game_state *game){
     
 }
 
-void language_menu(game_state *game){
+void language_menu(game_settings *game){
 
     curs_set(0);
     clear();
@@ -171,7 +171,7 @@ void language_menu(game_state *game){
     getch();
 }
 
-void difficulty_menu(game_state *game){
+void difficulty_menu(game_settings *game){
 
     curs_set(0);
     clear();

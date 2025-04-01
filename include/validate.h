@@ -6,14 +6,15 @@
 #include<stdlib.h>
 #include<string.h>
 #include<time.h>
-#include"grid.h"
+
+#include "utilities.h"
+
 
 //Settings for the trie
 #define MAX_CHILDREN 26
 #define TRIE_FILE "palabras.txt"
 #define ANSWER "erase"
 
-enum Color {RED, YELLOW, GREEN};
 
 typedef struct node{
     struct node *children[MAX_CHILDREN];

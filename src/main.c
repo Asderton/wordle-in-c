@@ -1,9 +1,9 @@
-#include "../headers/wordle.h"
+#include "../include/main.h"
 
 int main(void){
 
     node *trie = create_trie();
-    game_state game;
+    game_settings game;
     game.n_letters = 5;
     game.chances = 6;
     game.language = EN;

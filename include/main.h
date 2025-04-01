@@ -1,11 +1,10 @@
 #ifndef WORDLE_H
 #define WORDLE_H
 
-#include<stdio.h>
-#include<ncurses.h>
 #include "validate.h"
 #include "grid.h"
 #include "menu.h"
+#include "utilities.h"
 
 
 

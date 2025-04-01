@@ -1,4 +1,4 @@
-#include "../headers/grid.h"
+#include "../include/grid.h"
 
 
 //Movement along the lines

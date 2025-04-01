@@ -65,8 +65,8 @@ void erase_line(Position_t *_cursor){
 
 
 //Creation of the rows 
-void make_grid(void){
-    for (int squares_printed = 0; squares_printed < CHANCES; squares_printed++){
+void make_grid(game_settings *game){
+    for (int squares_printed = 0; squares_printed < game ->chances; squares_printed++){
         print_bound();
         print_container();
         print_bound();

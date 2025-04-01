@@ -9,7 +9,7 @@
 
 
 
-void end_game(bool won, int attempts, enum Color **attempt_color_code, char *answer);
+void end_game(game_settings *game, int attempts, enum Color **attempt_color_code, char *answer);
 
 
 

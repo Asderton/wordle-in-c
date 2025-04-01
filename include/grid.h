@@ -44,7 +44,7 @@ char *get_guess(Position_t *_cursor);
 void erase_line(Position_t *_cursor);
 
 //Creation of the rows
-void make_grid(void);
+void make_grid(game_settings *game);
 void print_container(void);
 void print_bound(void);
 

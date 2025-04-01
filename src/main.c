@@ -3,20 +3,20 @@
 int main(void){
 
     node *trie = create_trie();
-    game_settings game;
-    game.n_letters = 5;
-    game.chances = 6;
-    game.language = EN;
-    game.won = false;
+    game_settings *game = malloc(sizeof(game_settings));
+    game ->n_letters = 5;
+    game ->chances = 6;
+    game ->language = EN;
+    game ->won = false;
 
     initscr();
     start_color();
     
     
-    start_menu(&game);
+    start_menu(game);
     clear();
     Position_t cursor = {START_POSITION};
-    enum Color *attempt_tracker[CHANCES];
+    enum Color *attempt_tracker[game ->chances];
     start_color();
     init_pair(1, COLOR_GREEN, COLOR_BLACK);
     init_pair(2, COLOR_YELLOW, COLOR_BLACK);
@@ -24,12 +24,12 @@ int main(void){
 
     char *answer = get_random_word(trie);
 
-    make_grid();
+    make_grid(game);
     refresh();
 
 
     //Dato curioso: Tenia tries pero se confundia despues con la estructura de datos
-    for (int attempts = 0; attempts < CHANCES; attempts++) {    
+    for (int attempts = 0; attempts < game ->chances; attempts++) {    
         char *guess = get_guess(&cursor);
         
         // Validate if guess is a word
@@ -75,7 +75,7 @@ int main(void){
                     attroff(COLOR_PAIR(1));
                     green_counter++;
                     if (green_counter == LETTER_QUANTITY){
-                        end_game(true, attempts + 1, attempt_tracker, answer);
+                        end_game(game, attempts + 1, attempt_tracker, answer);
                         return 0;
                     }
                   
@@ -100,32 +100,52 @@ int main(void){
         refresh();
     }
 
-    end_game(false, CHANCES, attempt_tracker, answer);
+    end_game(game, CHANCES, attempt_tracker, answer);
     endwin();
 
 }
 
-void end_game(bool won, int attempts, enum Color **attempt_color_code, char *answer){
+void end_game(game_settings *game, int attempts, enum Color **attempt_color_code, char *answer){
     
     clear();
-    printw("|--------------------------------|\n");
-    printw("|                                |\n");
-    if(won)
-        printw("|            You Won!            |\n");
-    else
-        printw("|            You Lost!           |\n");
-    printw("|                                |\n");
-    printw("|          The word was:         |\n");
-    printw("|             \"%s\"            |\n", answer);
-    printw("|                                |\n");
-    printw("|         Your attempts:         |\n");
-    printw("|                                |\n");//*****
-    printw("|                                |\n");//***** 
-    printw("|                                |\n");//***** 
-    printw("|                                |\n");
-    printw("|         Key to continue        |\n");
-    printw("|--------------------------------|\n");
-    
+    if (game ->language == EN){
+        printw("|--------------------------------|\n");
+        printw("|                                |\n");
+        if(game ->won == true)
+            printw("|            You Won!            |\n");
+        else
+            printw("|            You Lost!           |\n");
+        printw("|                                |\n");
+        printw("|          The word was:         |\n");
+        printw("|             \"%s\"            |\n", answer);
+        printw("|                                |\n");
+        printw("|         Your attempts:         |\n");
+        printw("|                                |\n");//*****
+        printw("|                                |\n");//***** 
+        printw("|                                |\n");//***** 
+        printw("|                                |\n");
+        printw("|         Key to continue        |\n");
+        printw("|--------------------------------|\n");
+    }
+    else {
+        printw("|--------------------------------|\n");
+        printw("|                                |\n");
+        if(game ->won == true)
+            printw("|            Ganaste!            |\n");
+        else
+            printw("|            Perdiste!           |\n");
+        printw("|                                |\n");
+        printw("|         La palabra era:        |\n");
+        printw("|             \"%s\"            |\n", answer);
+        printw("|                                |\n");
+        printw("|          Tus intentos          |\n");
+        printw("|                                |\n");//*****
+        printw("|                                |\n");//***** 
+        printw("|                                |\n");//***** 
+        printw("|                                |\n");
+        printw("|       Tecla para continuar     |\n");
+        printw("|--------------------------------|\n");
+    }
 
     Position_t cursor = {10, 9};
     move CURRENT_POSITION;

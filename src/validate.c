@@ -57,11 +57,20 @@ bool is_word(char *word, node *root){
 
 
 //Creation of the trie
-node *create_trie(void){
+node *create_trie(int lan){
 
     node *root = malloc(sizeof(node));
     root = create_node();
-    FILE *file_p = fopen(TRIE_FILE, "r"); 
+    char *archivo = NULL;
+    if (lan == EN){
+        archivo = "EN-WORDS.txt";
+    }
+    else {
+        archivo = "ES-WORDS.txt";
+    }
+   
+
+    FILE *file_p = fopen(archivo, "r"); 
 
     if (file_p == NULL){
         printf("No hay archivo\n");

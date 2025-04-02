@@ -2,7 +2,7 @@
 
 int main(void){
 
-    node *trie = create_trie();
+   
     game_settings *game = malloc(sizeof(game_settings));
     game ->n_letters = 5;
     game ->chances = 6;
@@ -10,10 +10,12 @@ int main(void){
     game ->won = false;
 
     initscr();
-    start_color();
-    
-    
     start_menu(game);
+    node *trie = create_trie(game ->language);
+    start_color();
+ 
+    
+    
     clear();
     Position_t cursor = {START_POSITION};
     enum Color *attempt_tracker[game ->chances];
@@ -22,9 +24,11 @@ int main(void){
     init_pair(2, COLOR_YELLOW, COLOR_BLACK);
     init_pair(3, COLOR_RED, COLOR_BLACK);
 
+    
     char *answer = get_random_word(trie);
 
     make_grid(game);
+
     refresh();
 
 

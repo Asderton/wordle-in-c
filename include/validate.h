@@ -12,7 +12,8 @@
 
 //Settings for the trie
 #define MAX_CHILDREN 26
-#define TRIE_FILE "palabras.txt"
+#define EN_WORDS "EN-WORDS.txt"
+#define ES_WORDS "ES-WORDS.txt"
 #define ANSWER "erase"
 
 
@@ -28,7 +29,7 @@ enum Color *check_guess(char *guess, char* answer);
 bool is_word(char *word, node *root);
 
 //Creation of the trie
-node *create_trie(void);
+node *create_trie(int lan);
 node *create_node(void);
 void add_word(char *word, node *root);
 char *get_random_word(node *root);

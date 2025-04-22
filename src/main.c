@@ -1,212 +1,136 @@
 #include "../include/main.h"
 
-int main(void){
+game_settings *create_default_session(){
 
     game_settings *game = malloc(sizeof(game_settings));
     game ->n_letters = 5;
     game ->chances = 6;
     game ->language = EN;
     game ->won = false;  
-    
-    
-    initscr();
-    start_color();
 
-    start_menu(game);
-    node *trie = create_trie(game ->language);
-    
-    clear();
-    Position_t cursor = {START_POSITION};
-    enum Color *attempt_tracker[game ->chances];
-    init_pair(1, COLOR_GREEN, COLOR_BLACK);
-    init_pair(2, COLOR_YELLOW, COLOR_BLACK);
-    init_pair(3, COLOR_RED, COLOR_BLACK);
-
-    char *answer = get_random_word(trie);
-
-    make_grid(game);
-
-    refresh();
-
-
-    //Dato curioso: Tenia tries pero se confundia despues con la estructura de datos
-    for (int attempts = 0; attempts < game ->chances; attempts++) {    
-        char *guess = get_guess(&cursor);
-        
-        // Validate if guess is a word
-        if (!is_word(guess, trie)){
-            cursor.x RIGHT;
-            move CURRENT_POSITION;
-
-            if (game ->language == EN){
-                printw("Not a word!");
-            }
-            else {
-                printw("Palabra Invalida!");
-            }
-            curs_set(0);
-            refresh();
-
-            napms(1000);
-            curs_set(1);
-            move CURRENT_POSITION;
-            printw("                 ");
-            erase_line(&cursor); 
-            refresh();
-            attempts--;
-        
-            napms(100);
-        }
-
-        else{
-
-            cursor.x = START_OF_LINE;
-            move CURRENT_POSITION;
-
-            enum Color *letter_colors = check_guess(guess, answer);
-            attempt_tracker[attempts] = letter_colors;
-            int green_counter = 0;
-
-            for (int i = 0; i < LETTER_QUANTITY; i++){
-
-                if (letter_colors[i] == RED){
-                    attron(COLOR_PAIR(3));
-                    addch(guess[i] MAKE_UPPER);
-                    attroff(COLOR_PAIR(3));
-
-                }
-                else if (letter_colors[i] == GREEN){
-                    attron(COLOR_PAIR(1));
-                    addch(guess[i] MAKE_UPPER);
-                    attroff(COLOR_PAIR(1));
-                    green_counter++;
-                    if (green_counter == LETTER_QUANTITY){
-                        end_game(game, attempts + 1, attempt_tracker, answer);
-                        return 0;
-                    }
-                  
-                }
-                else if (letter_colors[i] == YELLOW){
-                    attron(COLOR_PAIR(2));
-                    addch(guess[i] MAKE_UPPER);
-                    attroff(COLOR_PAIR(2));
-                    
-                }
-                cursor.x RIGHT;
-                move CURRENT_POSITION;
-                refresh();
-             }
-
-            cursor.x = START_OF_LINE;
-            cursor.y DOWN;   
-            move CURRENT_POSITION;
-            refresh();
-        }
-        free(guess);
-        refresh();
-    }
-
-    end_game(game, CHANCES, attempt_tracker, answer);
-    endwin();
-
+    return game;
 }
 
 
+void show_invalid_message(int language, Position_t *_cursor){
 
-
-
-void end_game(game_settings *game, int attempts, enum Color **attempt_color_code, char *answer){
-    
-    clear();
-    if (game ->language == EN){
-        printw("|--------------------------------|\n");
-        printw("|                                |\n");
-        if(game ->won == true)
-            printw("|            You Won!            |\n");
-        else
-            printw("|            You Lost!           |\n");
-        printw("|                                |\n");
-        printw("|          The word was:         |\n");
-        printw("|             \"%s\"            |\n", answer);
-        printw("|                                |\n");
-        printw("|         Your attempts:         |\n");
-        printw("|                                |\n");//*****
-        printw("|                                |\n");//***** 
-        printw("|                                |\n");//***** 
-        printw("|                                |\n");
-        printw("|         Key to continue        |\n");
-        printw("|--------------------------------|\n");
+    _cursor ->x += 6;
+    move (_cursor ->y, _cursor -> x);
+    if (language == EN){
+        printw("Not a word!");
     }
     else {
-        printw("|--------------------------------|\n");
-        printw("|                                |\n");
-        if(game ->won == true)
-            printw("|            Ganaste!            |\n");
-        else
-            printw("|            Perdiste!           |\n");
-        printw("|                                |\n");
-        printw("|         La palabra era:        |\n");
-        printw("|             \"%s\"            |\n", answer);
-        printw("|                                |\n");
-        printw("|          Tus intentos          |\n");
-        printw("|                                |\n");//*****
-        printw("|                                |\n");//***** 
-        printw("|                                |\n");//***** 
-        printw("|                                |\n");
-        printw("|       Tecla para continuar     |\n");
-        printw("|--------------------------------|\n");
+        printw("Palabra Invalida!");
     }
-
-    Position_t cursor = {10, 9};
-    move CURRENT_POSITION;
-    for (int i = 0; i < attempts; i++){
-        enum Color *_attempt_color_code = attempt_color_code[i];
-        for (int j = 0; j < LETTER_QUANTITY; j++){
-            
-            if (_attempt_color_code[j] == GREEN){
-                attron(COLOR_PAIR(1));
-                addch('*');
-                attroff(COLOR_PAIR(1));
-            }
-            else if (_attempt_color_code[j] == YELLOW){
-                attron(COLOR_PAIR(2));
-                addch('*');
-                attroff(COLOR_PAIR(2));
-            }
-            else if (_attempt_color_code[j] == RED){
-                attron(COLOR_PAIR(3));
-                addch('*');
-                attroff(COLOR_PAIR(3));
-            }
-        }
-        switch (i){
-
-            case 0:
-            case 1:
-                cursor.y++;
-                cursor.x = 10;
-                move CURRENT_POSITION;
-                break;
-
-            case 2:
-                cursor.y = 9;
-                cursor.x =18;
-                move CURRENT_POSITION;
-                break;
-            
-            case 3:
-            case 4:
-            case 5:
-                cursor.y++;
-                cursor.x = 18;
-                move CURRENT_POSITION;
-                break;
-        }       
-     }
-
-        
     curs_set(0);
     refresh();
-    getch();
+
+    napms(1000);
+    curs_set(1);
+    move _CURRENT_POSITION;
+    printw("                 "); 
+    return;
+}
+
+void show_guessed_letters(enum Color *color_list, char *guess, Position_t *_cursor){
+    bool won = false;
+
+    _cursor ->x = START_OF_LINE;
+    move _CURRENT_POSITION;
+
+    for (int i = 0; i < LETTER_QUANTITY; i++){
+
+        if (color_list[i] == RED){
+            attron(COLOR_PAIR(3));
+            addch(guess[i] MAKE_UPPER);
+            attroff(COLOR_PAIR(3));
+
+        }
+        else if (color_list[i] == GREEN){
+            attron(COLOR_PAIR(1));
+            addch(guess[i] MAKE_UPPER);
+            attroff(COLOR_PAIR(1));      
+        }
+        else if (color_list[i] == YELLOW){
+            attron(COLOR_PAIR(2));
+            addch(guess[i] MAKE_UPPER);
+            attroff(COLOR_PAIR(2));
+            
+        }
+        _cursor ->x RIGHT;
+        move _CURRENT_POSITION;
+        refresh();
+    }
+
+    _cursor ->x = START_OF_LINE;
+    _cursor ->y DOWN;   
+    move _CURRENT_POSITION;
+    refresh();
+    return;
+}
+
+
+bool is_answer(enum Color *color_list){
+    bool match = true;
+    for (int i = 0; i < LETTER_QUANTITY; i++){
+        if (color_list[i] != GREEN){
+            match = false;
+        }
+    }
+    return match;
+}
+
+void start_curses(void){
+    initscr();
+    start_color();
+    init_pair(1, COLOR_GREEN, COLOR_BLACK);
+    init_pair(2, COLOR_YELLOW, COLOR_BLACK);
+    init_pair(3, COLOR_RED, COLOR_BLACK);
+}
+
+
+int main(void){
+
+    game_settings *game = create_default_session();
+    start_curses();
+
+    start_menu(game);
+    node *trie = create_trie(game ->language);
+    clear();
+
+    Position_t cursor = {2, 1};
+    enum Color *attempt_tracker[game ->chances];
+
+
+    char *answer = get_random_word(trie);
+    make_grid(game);
+    printw("%s", answer);
+    refresh();
+
+    for (int attempt_number = 0; attempt_number < game ->chances; attempt_number++) {    
+        
+        char *guess = get_guess(&cursor);
+
+        if (is_word(guess, trie)){
+            enum Color *letter_colors = check_guess(guess, answer);
+            attempt_tracker[attempt_number] = letter_colors;
+    
+            if (is_answer(letter_colors)){
+                game ->won = true;
+                end_game(game, attempt_number + 1, attempt_tracker, answer);
+                return 0;
+            }
+            else {
+                show_guessed_letters(letter_colors, guess, &cursor);
+            }
+        }
+        else {
+            show_invalid_message(game ->language, &cursor);
+            erase_line(&cursor);
+            attempt_number --;
+            refresh();
+        }   
+    }
+    end_game(game, game ->chances, attempt_tracker, answer);
     endwin();
 }

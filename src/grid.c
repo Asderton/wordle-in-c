@@ -5,7 +5,7 @@
 char *get_guess(Position_t *_cursor){
     noecho();
 
-    char *word_guessed = malloc(sizeof(char) * LETTER_QUANTITY);
+    char *word_guessed = malloc(sizeof(char) * (LETTER_QUANTITY + 1));
 
     for (int letter_index = 0; letter_index < LETTER_QUANTITY; letter_index++){
         
@@ -46,7 +46,9 @@ char *get_guess(Position_t *_cursor){
                 letter_index--;
                 break;
         }  
-    }   
+    }
+
+    word_guessed[LETTER_QUANTITY] = '\0';
     return word_guessed;
 }
 

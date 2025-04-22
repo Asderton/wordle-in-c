@@ -1,7 +1,5 @@
 #include "../include/validate.h"
 
-
-
 //Guess validation
 enum Color *check_guess(char *guess, char* answer){
 
@@ -34,9 +32,7 @@ enum Color *check_guess(char *guess, char* answer){
 
 //Cheks if guess is in the trie (Deberia llamar al parametro guess Sami?)
 bool is_word(char *word, node *root){
-    
     node * trie_p = root;
-
     for (int i = 0; i < strlen(word); i++){
 
         int index = word[i] - 'a';
@@ -47,12 +43,8 @@ bool is_word(char *word, node *root){
             return false;
         }
     }
-    if (trie_p -> is_leaf){
-        return true;
-    }
-    else {
-        return false;
-    }
+
+    return trie_p -> is_leaf;
 }
 
 
@@ -115,7 +107,7 @@ void add_word(char *word, node *root){
 
 char *get_random_word(node *root){
     node *trie_p = root;
-    char *answer = malloc(sizeof(char) * LETTER_QUANTITY);
+    char *answer = malloc(sizeof(char) * (LETTER_QUANTITY + 1));
     srand(time(NULL));
 
     for (int i = 0; i < LETTER_QUANTITY; i++){
@@ -128,5 +120,7 @@ char *get_random_word(node *root){
             i--;
         }
     }
+
+    answer[LETTER_QUANTITY] = '\0';
     return answer;
 }

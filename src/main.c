@@ -2,29 +2,26 @@
 
 int main(void){
 
-   
     game_settings *game = malloc(sizeof(game_settings));
     game ->n_letters = 5;
     game ->chances = 6;
     game ->language = EN;
-    game ->won = false;
-
+    game ->won = false;  
+    
+    
     initscr();
+    start_color();
+
     start_menu(game);
     node *trie = create_trie(game ->language);
-    start_color();
- 
-    
     
     clear();
     Position_t cursor = {START_POSITION};
     enum Color *attempt_tracker[game ->chances];
-    start_color();
     init_pair(1, COLOR_GREEN, COLOR_BLACK);
     init_pair(2, COLOR_YELLOW, COLOR_BLACK);
     init_pair(3, COLOR_RED, COLOR_BLACK);
 
-    
     char *answer = get_random_word(trie);
 
     make_grid(game);
@@ -37,11 +34,16 @@ int main(void){
         char *guess = get_guess(&cursor);
         
         // Validate if guess is a word
-        if (is_word(guess, trie) != true){
+        if (!is_word(guess, trie)){
             cursor.x RIGHT;
             move CURRENT_POSITION;
 
-            printw("Palabra Invalida!");
+            if (game ->language == EN){
+                printw("Not a word!");
+            }
+            else {
+                printw("Palabra Invalida!");
+            }
             curs_set(0);
             refresh();
 
@@ -108,6 +110,10 @@ int main(void){
     endwin();
 
 }
+
+
+
+
 
 void end_game(game_settings *game, int attempts, enum Color **attempt_color_code, char *answer){
     

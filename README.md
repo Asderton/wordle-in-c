@@ -1,7 +1,7 @@
 Wordle in C
 Tested: Ubuntu 24.04
 
-How to play: Run "make wordle" in terminal
+How to play:
  1. Open directory on terminal
  2. Run "make wordle"
  3. Enjoy :P

@@ -104,7 +104,6 @@ int main(void){
 
     char *answer = get_random_word(trie);
     make_grid(game);
-    printw("%s", answer);
     refresh();
 
     for (int attempt_number = 0; attempt_number < game ->chances; attempt_number++) {    

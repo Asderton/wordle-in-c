@@ -104,6 +104,12 @@ int main(void){
 
     char *answer = get_random_word(trie);
     make_grid(game);
+    if (game ->language == EN){
+        printw("Erase with ESC");
+    }
+    else {
+        printw("Borrar con ESC");
+    }
     refresh();
 
     for (int attempt_number = 0; attempt_number < game ->chances; attempt_number++) {    
